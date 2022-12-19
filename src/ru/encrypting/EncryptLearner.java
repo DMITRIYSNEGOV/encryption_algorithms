@@ -14,7 +14,7 @@ public class EncryptLearner
         mainFrame.setSize(917, 600);
         mainFrame.setResizable(false);
 
-        JPanel contentPanel = new ContentPanel(mainFrame);
+        JPanel contentPanel = new ContentPanel();
         contentPanel.setBackground(new Color(123,123,213));
 
         JScrollPane scrollPane = new JScrollPane(contentPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);

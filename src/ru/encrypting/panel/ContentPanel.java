@@ -3,6 +3,7 @@ package ru.encrypting.panel;
 import lombok.Getter;
 import lombok.Setter;
 import ru.encrypting.common.helper.ElementsCreatorHelper;
+import ru.encrypting.common.helper.InitLegendPanelCreator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +14,7 @@ import java.awt.*;
 public class ContentPanel extends JPanel
 {
 
-    public ContentPanel(JFrame mainFrame)
+    public ContentPanel()
     {
         GroupLayout groupLayout = new GroupLayout(this);
         groupLayout.setAutoCreateGaps(true);
@@ -22,8 +23,7 @@ public class ContentPanel extends JPanel
         this.setLayout(groupLayout);
         this.setBackground(new Color(255, 255, 255));
         ElementsCreatorHelper.setGroupLayoutContentPanel(groupLayout);
-        ElementsCreatorHelper.setFrame(mainFrame);
-        ElementsCreatorHelper.initLegendPanel();
+        InitLegendPanelCreator.initLegendPanel(groupLayout);
     }
 
 

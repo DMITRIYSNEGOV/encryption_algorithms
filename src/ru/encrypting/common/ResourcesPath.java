@@ -9,6 +9,9 @@ public class ResourcesPath
     public static final String CAESAR_TITLE_PATH = "/images/caesar_title.png";
     public static final String CAESAR_ENCRYPT_DESCRIPTION_PATH = "/images/caesar_encrypt_description.png";
 
+    public static final String RSA_TITLE_PATH = "/images/rsa_title.png";
+    public static final String RSA_ENCRYPT_DESCRIPTION_PATH = "/images/rsa_encrypt_description.png";
+
     public static final String VERTICAL_LINE_EXAMPLE_PATH = "/images/vertical_line_example.png";
     public static final String EMPTY_IMAGE_PATH = "/images/empty_image.png";
     public static final String GRADIENT_EXAMPLE_PATH = "/images/gradient_example1.png";

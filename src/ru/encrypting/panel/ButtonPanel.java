@@ -31,6 +31,7 @@ public class ButtonPanel extends JPanel
         add(ATBASH_ENCRYPT_BUTTON, gbc);
         add(ATBASH_ENCRYPT_BUTTON, gbc);
         add(CODE_WORD_ENCRYPT_BUTTON, gbc);
+        add(RSA_ENCRYPT_BUTTON, gbc);
 
         gbc.weighty = 1;
         add(new JLabel(), gbc);
