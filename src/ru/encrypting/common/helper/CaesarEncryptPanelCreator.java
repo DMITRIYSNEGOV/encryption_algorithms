@@ -26,8 +26,9 @@ public class CaesarEncryptPanelCreator
         JLabel title = new TitleLabel("Шифр Цезаря", CAESAR_TITLE_PATH);
         title.setMaximumSize(new Dimension((int) contentPanel.getSize().getWidth(), 40));
 
-        JTextPane description = new DescriptionTextPane("   Шифр Цeзаря (шифр сдвига, код Цезаря) – такой простой вид шифрования текста, при котором все символы в тексте заменяются символами, сдвинутыми по алфавиту на правее или левее на постоянное количество позиций. Например, при сдвиге на 1 буква А заменяется на Б, Б на В и т.д. Вы можете как зашифровать текст данным способом, так и выполнить дешифровку.");
-        description.setMaximumSize(new Dimension(700, 100));
+        JTextPane description = new DescriptionTextPane(
+                "   Шифр Цeзаря (шифр сдвига, код Цезаря) – такой простой вид шифрования текста, при котором все символы в тексте заменяются символами, сдвинутыми по алфавиту на правее или левее на постоянное количество позиций. Например, при сдвиге на 1 буква А заменяется на Б, Б на В и т.д. Вы можете как зашифровать текст данным способом, так и выполнить дешифровку.",
+                new Dimension(700, 100));
 
         ImageScalingLabel caesarEncryptDescription = new ImageScalingLabel(CAESAR_ENCRYPT_DESCRIPTION_PATH, 650, 274);
 

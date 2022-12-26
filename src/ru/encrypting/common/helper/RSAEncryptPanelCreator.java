@@ -1,6 +1,7 @@
 package ru.encrypting.common.helper;
 
 import ru.encrypting.cipher.RSACipher;
+import ru.encrypting.common.CryptoType;
 import ru.encrypting.label.ImageScalingLabel;
 import ru.encrypting.label.TitleLabel;
 import ru.encrypting.textPane.DescriptionTextPane;
@@ -10,10 +11,11 @@ import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
 import static ru.encrypting.cipher.RSACipher.*;
-import static ru.encrypting.common.ResourcesPath.RSA_ENCRYPT_DESCRIPTION_PATH;
-import static ru.encrypting.common.ResourcesPath.RSA_TITLE_PATH;
+import static ru.encrypting.common.ResourcesPath.*;
+import static ru.encrypting.common.ResourcesPath.EMPTY_IMAGE_PATH;
 
 public class RSAEncryptPanelCreator
 {
@@ -22,11 +24,12 @@ public class RSAEncryptPanelCreator
         JLabel title = new TitleLabel("RSA шифрование", RSA_TITLE_PATH);
         title.setMaximumSize(new Dimension((int) contentPanel.getSize().getWidth(), 40));
 
-        JTextPane description = new DescriptionTextPane("   RSA — криптографический алгоритм с открытым ключом, основывающийся на вычислительной сложности задачи факторизации больших целых чисел.\n" +
+        JTextPane description = new DescriptionTextPane(
+                "   RSA — криптографический алгоритм с открытым ключом, основывающийся на вычислительной сложности задачи факторизации больших целых чисел.\n" +
                 "   Криптосистема RSA стала первой системой, пригодной и для шифрования, и для цифровой подписи. Алгоритм используется в большом числе криптографических приложений, включая PGP, S/MIME, TLS/SSL, IPSEC/IKE и других.\n" +
                 "   При шифровании RSA сообщения шифруются с помощью кода, называемого открытый ключ, которыми можно поделиться открыто. Из-за некоторых четких математических свойств алгоритма RSA, если сообщение было зашифровано открытым ключом, оно может быть расшифровано только другим ключом, известным как закрытый ключ. У каждого пользователя RSA есть пара ключей, состоящая из их открытого и закрытого ключей. Как следует из названия, закрытый ключ должен храниться в секрете.\n" +
-                "   Схемы шифрования с открытым ключом отличаются от шифрование с симметричным ключом, где и в процессе шифрования, и в дешифровании используется один и тот же закрытый ключ. Эти различия делают шифрование с открытым ключом, такое как RSA, полезным для связи в ситуациях, когда не было возможности безопасно распространять ключи заранее.");
-        description.setMaximumSize(new Dimension(700, 100));
+                "   Схемы шифрования с открытым ключом отличаются от шифрование с симметричным ключом, где и в процессе шифрования, и в дешифровании используется один и тот же закрытый ключ. Эти различия делают шифрование с открытым ключом, такое как RSA, полезным для связи в ситуациях, когда не было возможности безопасно распространять ключи заранее.",
+                new Dimension(700, 100));
 
         ImageScalingLabel caesarEncryptDescription = new ImageScalingLabel(RSA_ENCRYPT_DESCRIPTION_PATH, 650, 274);
 
@@ -41,19 +44,27 @@ public class RSAEncryptPanelCreator
         JLabel qHint = createLabelHint("q");
         JTextArea qInput = createTextArea(rsa.getQ().toString(), contentPanel);
 
-        DescriptionTextPane nDescription = new DescriptionTextPane("Вычисляем \"n = p * q\"");
+        DescriptionTextPane nDescription = new DescriptionTextPane(
+                "Вычисляем \"n = p * q\"",
+                new Dimension(700, 40));
         JLabel nHint = createLabelHint("n");
         JTextArea nInput = createTextArea(rsa.getN().toString(), contentPanel);
 
-        DescriptionTextPane totnDescription = new DescriptionTextPane("Вычисляем тотиентную функцию Эйлера. tot(n) = φ(n) = (p - 1) * (q - 1)");
+        DescriptionTextPane totnDescription = new DescriptionTextPane(
+                "Вычисляем тотиентную функцию Эйлера. tot(n) = φ(n) = (p - 1) * (q - 1)",
+                new Dimension(700, 40));
         JLabel totnHint = createLabelHint("tot(n)");
         JTextArea totnInput = createTextArea(rsa.getTotN().toString(), contentPanel);
 
-        DescriptionTextPane eDescription = new DescriptionTextPane("Выберем любое число \"e\", где \"1 < e < φ(n)\" и \"e\" и \"e\" нечетное число, которое не имеет общих делителей с φ(n)");
+        DescriptionTextPane eDescription = new DescriptionTextPane(
+                "Выберем любое число \"e\", где \"1 < e < φ(n)\" и \"e\" и \"e\" нечетное число, которое не имеет общих делителей с φ(n)",
+                new Dimension(700, 40));
         JLabel eHint = createLabelHint("e");
         JTextArea eInput = createTextArea(rsa.getE().toString(), contentPanel);
 
-        DescriptionTextPane dDescription = new DescriptionTextPane("Вычислим \"d\", которое обратно \"e\" по модулю φ");
+        DescriptionTextPane dDescription = new DescriptionTextPane(
+                "Вычислим \"d\", которое обратно \"e\" по модулю φ",
+                new Dimension(700, 40));
         JLabel dHint = createLabelHint("d");
         JTextArea dInput = createTextArea(rsa.getD().toString(), contentPanel);
 
@@ -144,7 +155,6 @@ public class RSAEncryptPanelCreator
                     .addComponent(decryptedTextHint)
                     .addComponent(decryptedTextInput)
                 .addGroup(groupLayoutContentPanel.createSequentialGroup())
-
         );
 
         groupLayoutContentPanel.setVerticalGroup(groupLayoutContentPanel.createSequentialGroup()
@@ -198,20 +208,23 @@ public class RSAEncryptPanelCreator
 
     private static JLabel createLabelHint(String hint)
     {
-        JLabel alphabetHint = new JLabel(hint);
-        alphabetHint.setMaximumSize(new Dimension(200, 40));
-        alphabetHint.setPreferredSize(new Dimension(200, 200));
-        alphabetHint.setVerticalAlignment(SwingConstants.BOTTOM);
-        return alphabetHint;
+        JLabel labelHint = new JLabel(hint);
+        labelHint.setMaximumSize(new Dimension(200, 40));
+        labelHint.setPreferredSize(new Dimension(200, 40));
+        labelHint.setSize(200, 40);
+        labelHint.setVerticalAlignment(SwingConstants.BOTTOM);
+        return labelHint;
     }
 
     private static JTextArea createTextArea(String text, JPanel contentPanel)
     {
-        JTextArea beforeTextField = new JTextArea();
-        beforeTextField.setText(text);
-        beforeTextField.setMaximumSize(new Dimension(500, 150));
-        beforeTextField.setPreferredSize(new Dimension(500, 150));
-        beforeTextField.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
-        return beforeTextField;
+        JTextArea textField = new JTextArea();
+        textField.setText(text);
+        textField.setMaximumSize(new Dimension(600, 40));
+        textField.setPreferredSize(new Dimension(600, 40));
+        textField.setSize(600, 40);
+        textField.setLineWrap(true);
+        textField.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
+        return textField;
     }
 }

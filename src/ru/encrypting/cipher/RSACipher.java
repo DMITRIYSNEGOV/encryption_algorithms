@@ -4,35 +4,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import ru.encrypting.common.LanguageInput;
-import ru.encrypting.label.ImageScalingLabel;
-
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Random;
 
 public class RSACipher
 {
-    public static String encryptText(String message, LanguageInput languageInput, int shiftKey)
-    {
-        return "";
-    }
-
-    public static String decryptText(String message, LanguageInput languageInput, int shiftKey)
-    {
-        return "";
-    }
-
-    public static void encryptImage(ImageScalingLabel leftImage, ImageScalingLabel rightImage, int shiftKey) throws IOException
-    {
-
-    }
-
-    public static void decryptImage(ImageScalingLabel leftImage, ImageScalingLabel rightImage, int shiftKey) throws IOException
-    {
-
-    }
-
     @Getter
     @ToString
     @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)

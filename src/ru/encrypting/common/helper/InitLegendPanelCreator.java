@@ -16,8 +16,9 @@ public class InitLegendPanelCreator
     {
         JLabel title = new TitleLabel("Приложение для изучения алгоритмов шифрования", LEGEND_TITLE_PATH);
 
-        JTextPane description = new DescriptionTextPane("Данная программа позволит познакомиться и изучить популярные виды шифрования на существующих и своих примерах");
-        description.setMaximumSize(new Dimension(700,23));
+        JTextPane description = new DescriptionTextPane(
+                "Данная программа позволит познакомиться и изучить популярные виды шифрования на существующих и своих примерах",
+                new Dimension(700,23));
 
         Font bigFont = new Font("Arial Black", Font.BOLD, 45);
         JLabel textBeforeEncode = new JLabel("TEXT") {{ setFont(bigFont); }};
