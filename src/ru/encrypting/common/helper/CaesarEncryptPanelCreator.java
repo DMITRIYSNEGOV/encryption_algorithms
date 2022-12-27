@@ -3,21 +3,23 @@ package ru.encrypting.common.helper;
 import ru.encrypting.cipher.CaesarCipher;
 import ru.encrypting.common.CryptoType;
 import ru.encrypting.common.LanguageInput;
+import ru.encrypting.icon.ResizedIconFromResources;
 import ru.encrypting.label.ImageScalingLabel;
 import ru.encrypting.label.TitleLabel;
 import ru.encrypting.textPane.DescriptionTextPane;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 import static ru.encrypting.common.ResourcesPath.*;
-import static ru.encrypting.common.ResourcesPath.EMPTY_IMAGE_PATH;
 
 public class CaesarEncryptPanelCreator
 {
@@ -119,6 +121,142 @@ public class CaesarEncryptPanelCreator
             }
         });
 
+        // пример шифрования изображения 2
+        // выбор типа операции
+        JLabel operationTypeImageHint2 = createOperationTypeHintLabel();
+        JComboBox<CryptoType> operationTypeImage2 = createOperationTypeComboBox();
+
+        JLabel shiftImageHint2 = createShiftHintLabel();
+        shiftImageHint2.setPreferredSize(new Dimension(500, 500));
+        JComboBox<Integer> shiftImage2 = createShiftComboBox(299);
+
+        ImageScalingLabel leftImage2 = createImageScalingLabel(VERTICAL_LINE_EXAMPLE_PATH);
+        JButton transformImageButton2 = createTransformButton();
+
+        JButton swapImageButton2 = new JButton();
+        swapImageButton2.setText("< - >");
+
+        ImageScalingLabel rightImage2 = createImageScalingLabel(EMPTY_IMAGE_PATH);
+
+        swapImageButton2.addActionListener(e ->
+        {
+            BufferedImage temp =  ImageTransformatorHelper.getBufferedImage(leftImage2);
+            BufferedImage rightBufferedImage =  ImageTransformatorHelper.getBufferedImage(rightImage2);
+            leftImage2.setIcon(new ImageIcon(rightBufferedImage));
+            rightImage2.setIcon(new ImageIcon(temp));
+        });
+
+        transformImageButton2.addActionListener(e ->
+        {
+            try
+            {
+                CryptoType cryptoType = (CryptoType) operationTypeImage2.getSelectedItem();
+                switch (Objects.requireNonNull(cryptoType))
+                {
+                    case ENCRYPT:
+                    {
+                        CaesarCipher.encryptImage(leftImage2, rightImage2, (int) shiftImage2.getSelectedItem());
+                        break;
+                    }
+                    case DECRYPT:
+                    {
+                        CaesarCipher.decryptImage(leftImage2, rightImage2, (int) shiftImage2.getSelectedItem());
+                        break;
+                    }
+                    default: {
+                        throw new NullPointerException("Неизвестное значение");
+                    }
+                }
+            }
+            catch (IOException ioException)
+            {
+                ioException.printStackTrace();
+            }
+        });
+
+
+
+
+        // пример шифрования своих изображений
+        // выбор типа операции
+        JLabel operationTypeImageHint3 = createOperationTypeHintLabel();
+        JComboBox<CryptoType> operationTypeImage3 = createOperationTypeComboBox();
+
+        JLabel shiftImageHint3 = createShiftHintLabel();
+        shiftImageHint3.setPreferredSize(new Dimension(500, 500));
+        JComboBox<Integer> shiftImage3 = createShiftComboBox(299);
+
+        JButton downloadImage = new JButton();
+        downloadImage.setText("Загрузить картинку");
+
+        ImageScalingLabel leftImage3 = createImageScalingLabel(VERTICAL_LINE_EXAMPLE_PATH);
+        JButton transformImageButton3 = createTransformButton();
+
+        JButton swapImageButton3 = new JButton();
+        swapImageButton3.setText("< - >");
+
+        ImageScalingLabel rightImage3 = createImageScalingLabel(EMPTY_IMAGE_PATH);
+
+        swapImageButton3.addActionListener(e ->
+        {
+            BufferedImage temp =  ImageTransformatorHelper.getBufferedImage(leftImage3);
+            BufferedImage rightBufferedImage =  ImageTransformatorHelper.getBufferedImage(rightImage3);
+            leftImage3.setIcon(new ImageIcon(rightBufferedImage));
+            rightImage3.setIcon(new ImageIcon(temp));
+        });
+
+        transformImageButton3.addActionListener(e ->
+        {
+            try
+            {
+                CryptoType cryptoType = (CryptoType) operationTypeImage3.getSelectedItem();
+                switch (Objects.requireNonNull(cryptoType))
+                {
+                    case ENCRYPT:
+                    {
+                        CaesarCipher.encryptImage(leftImage3, rightImage3, (int) shiftImage3.getSelectedItem());
+                        break;
+                    }
+                    case DECRYPT:
+                    {
+                        CaesarCipher.decryptImage(leftImage3, rightImage3, (int) shiftImage3.getSelectedItem());
+                        break;
+                    }
+                    default: {
+                        throw new NullPointerException("Неизвестное значение");
+                    }
+                }
+            }
+            catch (IOException ioException)
+            {
+                ioException.printStackTrace();
+            }
+        });
+
+
+        downloadImage.addActionListener(e ->
+        {
+            JFileChooser jFileChooser = new JFileChooser();
+            if(jFileChooser.showOpenDialog(contentPanel) == JFileChooser.APPROVE_OPTION)
+            {
+                try
+                {
+                    BufferedImage img = ImageIO.read(
+                            new File(jFileChooser.
+                                    getSelectedFile().
+                                    toString())
+                    );
+                    leftImage3.setIcon(new ImageIcon(
+                            new ImageIcon(img).getImage().getScaledInstance(
+                                    300, 300, Image.SCALE_DEFAULT)));
+                }
+                catch (IOException ioException)
+                {
+                    ioException.printStackTrace();
+                }
+            }
+        });
+
         groupLayoutContentPanel.setHorizontalGroup(groupLayoutContentPanel.createParallelGroup()
                 .addComponent(title)
                 .addComponent(description)
@@ -153,6 +291,42 @@ public class CaesarEncryptPanelCreator
                                 .addComponent(transformImageButton)
                         )
                         .addComponent(rightImage))
+
+                .addGroup(groupLayoutContentPanel.createSequentialGroup()
+                        .addComponent(operationTypeImageHint2)
+                        .addComponent(shiftImageHint2)
+                )
+                .addGroup(groupLayoutContentPanel.createSequentialGroup()
+                        .addComponent(operationTypeImage2)
+                        .addComponent(shiftImage2)
+                )
+                .addGroup(groupLayoutContentPanel.createSequentialGroup()
+                        .addComponent(leftImage2)
+                        .addGroup(groupLayoutContentPanel.createParallelGroup()
+                                .addComponent(swapImageButton2)
+                                .addComponent(transformImageButton2)
+                        )
+                        .addComponent(rightImage2))
+
+
+                .addGroup(groupLayoutContentPanel.createSequentialGroup()
+                        .addComponent(operationTypeImageHint3)
+                        .addComponent(shiftImageHint3)
+                )
+                .addGroup(groupLayoutContentPanel.createSequentialGroup()
+                        .addComponent(operationTypeImage3)
+                        .addComponent(shiftImage3)
+                )
+                .addGroup(groupLayoutContentPanel.createSequentialGroup()
+                        .addComponent(downloadImage)
+                )
+                .addGroup(groupLayoutContentPanel.createSequentialGroup()
+                        .addComponent(leftImage3)
+                        .addGroup(groupLayoutContentPanel.createParallelGroup()
+                                .addComponent(swapImageButton3)
+                                .addComponent(transformImageButton3)
+                        )
+                        .addComponent(rightImage3))
         );
 
         groupLayoutContentPanel.setVerticalGroup(groupLayoutContentPanel.createSequentialGroup()
@@ -190,6 +364,44 @@ public class CaesarEncryptPanelCreator
                                 .addComponent(transformImageButton)
                         )
                         .addComponent(rightImage))
+
+
+                .addGroup(groupLayoutContentPanel.createParallelGroup()
+                        .addComponent(operationTypeImageHint2)
+                        .addComponent(shiftImageHint2)
+                )
+                .addGroup(groupLayoutContentPanel.createParallelGroup()
+                        .addComponent(operationTypeImage2)
+                        .addComponent(shiftImage2)
+                )
+                .addGroup(groupLayoutContentPanel.createParallelGroup()
+                        .addComponent(leftImage2)
+                        .addGroup(groupLayoutContentPanel.createSequentialGroup()
+                                .addComponent(swapImageButton2)
+                                .addComponent(transformImageButton2)
+                        )
+                        .addComponent(rightImage2))
+
+
+
+                .addGroup(groupLayoutContentPanel.createParallelGroup()
+                        .addComponent(operationTypeImageHint3)
+                        .addComponent(shiftImageHint3)
+                )
+                .addGroup(groupLayoutContentPanel.createParallelGroup()
+                        .addComponent(operationTypeImage3)
+                        .addComponent(shiftImage3)
+                )
+                .addGroup(groupLayoutContentPanel.createParallelGroup()
+                        .addComponent(downloadImage)
+                )
+                .addGroup(groupLayoutContentPanel.createParallelGroup()
+                        .addComponent(leftImage3)
+                        .addGroup(groupLayoutContentPanel.createSequentialGroup()
+                                .addComponent(swapImageButton3)
+                                .addComponent(transformImageButton3)
+                        )
+                        .addComponent(rightImage3))
         );
     }
 
