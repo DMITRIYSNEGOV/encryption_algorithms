@@ -15,11 +15,21 @@ import java.awt.image.BufferedImage;
 
 import static ru.encrypting.cipher.RSACipher.*;
 import static ru.encrypting.common.ResourcesPath.*;
-import static ru.encrypting.common.ResourcesPath.EMPTY_IMAGE_PATH;
 
-public class RSAEncryptPanelCreator
+public class RSAEncryptPanelCreator implements EncryptPanelCreator
 {
-    public static void initRSAEncryptPanel(JPanel contentPanel, GroupLayout groupLayoutContentPanel)
+    private static final EncryptPanelCreator INSTANCE = new RSAEncryptPanelCreator();
+
+    public static EncryptPanelCreator getInstance()
+    {
+        return INSTANCE;
+    }
+
+    private RSAEncryptPanelCreator()
+    {}
+
+    @Override
+    public void initPanel(JPanel contentPanel, GroupLayout groupLayoutContentPanel)
     {
         JLabel title = new TitleLabel("RSA шифрование", RSA_TITLE_PATH);
         title.setMaximumSize(new Dimension((int) contentPanel.getSize().getWidth(), 40));

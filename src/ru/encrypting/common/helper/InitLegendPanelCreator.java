@@ -10,9 +10,20 @@ import java.awt.*;
 
 import static ru.encrypting.common.ResourcesPath.*;
 
-public class InitLegendPanelCreator
+public class InitLegendPanelCreator implements EncryptPanelCreator
 {
-    public static void initLegendPanel(GroupLayout groupLayoutContentPanel)
+    private static final EncryptPanelCreator INSTANCE = new InitLegendPanelCreator();
+
+    public static EncryptPanelCreator getInstance()
+    {
+        return INSTANCE;
+    }
+
+    private InitLegendPanelCreator()
+    {}
+
+    @Override
+    public void initPanel(JPanel contentPanel, GroupLayout groupLayoutContentPanel)
     {
         JLabel title = new TitleLabel("Приложение для изучения алгоритмов шифрования", LEGEND_TITLE_PATH);
 

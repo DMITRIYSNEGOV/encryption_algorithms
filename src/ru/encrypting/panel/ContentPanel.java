@@ -23,7 +23,7 @@ public class ContentPanel extends JPanel
         this.setLayout(groupLayout);
         this.setBackground(new Color(255, 255, 255));
         ElementsCreatorHelper.setGroupLayoutContentPanel(groupLayout);
-        InitLegendPanelCreator.initLegendPanel(groupLayout);
+        InitLegendPanelCreator.getInstance().initPanel(null, groupLayout);
     }
 
 

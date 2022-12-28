@@ -11,6 +11,9 @@ public class ResourcesPath
     public static final String CAESAR_TITLE_PATH = "/images/caesar_title.png";
     public static final String CAESAR_ENCRYPT_DESCRIPTION_PATH = "/images/caesar_encrypt_description.png";
 
+    public static final String VIGENERE_TITLE_PATH = "/images/vigenere_title.png";
+    public static final String VIGENERE_ENCRYPT_DESCRIPTION_PATH = "/images/vigenere_encrypt_description.png";
+
     public static final String RSA_TITLE_PATH = "/images/rsa_title.png";
     public static final String RSA_ENCRYPT_DESCRIPTION_PATH = "/images/rsa_encrypt_description.png";
 

@@ -17,7 +17,7 @@ public class ElementsCreatorHelper
             {
                 contentPanel.removeAll();
                 contentPanel.repaint();
-                InitLegendPanelCreator.initLegendPanel(groupLayoutContentPanel);
+                InitLegendPanelCreator.getInstance().initPanel(contentPanel, groupLayoutContentPanel);
             }
         });
     }};
@@ -31,11 +31,23 @@ public class ElementsCreatorHelper
             {
                 contentPanel.removeAll();
                 contentPanel.repaint();
-                CaesarEncryptPanelCreator.initCaesarEncryptPanel(contentPanel, groupLayoutContentPanel);
+                CaesarEncryptPanelCreator.getInstance().initPanel(contentPanel, groupLayoutContentPanel);
             }
         });
     }};
-    public static final JButton VIGENERE_ENCRYPT_BUTTON = new MenuButton("Шифр Виженера");
+    public static final JButton VIGENERE_ENCRYPT_BUTTON = new MenuButton("Шифр Виженера")
+    {{
+        this.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                contentPanel.removeAll();
+                contentPanel.repaint();
+                VigenereEncryptPanelCreator.getInstance().initPanel(contentPanel, groupLayoutContentPanel);
+            }
+        });
+    }};
     public static final JButton REPLACEMENT_ENCRYPT_BUTTON = new MenuButton("Шифр замены");
     public static final JButton ATBASH_ENCRYPT_BUTTON = new MenuButton("Шифр Атбаша");
     public static final JButton CODE_WORD_ENCRYPT_BUTTON = new MenuButton("Шифр кодового слова");
@@ -48,7 +60,7 @@ public class ElementsCreatorHelper
            {
                contentPanel.removeAll();
                contentPanel.repaint();
-               RSAEncryptPanelCreator.initRSAEncryptPanel(contentPanel, groupLayoutContentPanel);
+               RSAEncryptPanelCreator.getInstance().initPanel(contentPanel, groupLayoutContentPanel);
            }
        });
     }};
