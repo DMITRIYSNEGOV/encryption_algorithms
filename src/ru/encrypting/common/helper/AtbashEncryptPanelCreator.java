@@ -1,5 +1,6 @@
 package ru.encrypting.common.helper;
 
+import ru.encrypting.cipher.AtbashCipher;
 import ru.encrypting.cipher.CaesarCipher;
 import ru.encrypting.common.CryptoType;
 import ru.encrypting.common.LanguageInput;
@@ -15,34 +16,36 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.stream.IntStream;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 import static ru.encrypting.common.ResourcesPath.*;
 
-public class CaesarEncryptPanelCreator implements EncryptPanelCreator
+public class AtbashEncryptPanelCreator implements EncryptPanelCreator
 {
-    private static final EncryptPanelCreator INSTANCE = new CaesarEncryptPanelCreator();
+    private static final AtbashEncryptPanelCreator INSTANCE = new AtbashEncryptPanelCreator();
 
-    public static EncryptPanelCreator getInstance()
+    public static AtbashEncryptPanelCreator getInstance()
     {
         return INSTANCE;
     }
 
-    private CaesarEncryptPanelCreator()
+    private AtbashEncryptPanelCreator()
     {}
 
     @Override
     public void initPanel(JPanel contentPanel, GroupLayout groupLayoutContentPanel)
     {
-        JLabel title = new TitleLabel("Шифр Цезаря", CAESAR_TITLE_PATH);
+        JLabel title = new TitleLabel("Шифр Атбаша", ATBASH_TITLE_PATH);
         title.setMaximumSize(new Dimension((int) contentPanel.getSize().getWidth(), 40));
 
         JTextPane description = new DescriptionTextPane(
-                "   Шифр Цeзаря (шифр сдвига, код Цезаря) – такой простой вид шифрования текста, при котором все символы в тексте заменяются символами, сдвинутыми по алфавиту на правее или левее на постоянное количество позиций. Например, при сдвиге на 1 буква А заменяется на Б, Б на В и т.д. Вы можете как зашифровать текст данным способом, так и выполнить дешифровку.",
+                "   Атба́ш — простой шифр подстановки для алфавитного письма. Правило шифрования состоит в замене i-й буквы алфавита буквой с номером  n-i+1, где n — число букв в алфавите.\n" +
+                        "Происхождение слова «атбаш» объясняется принципом замены букв. Слово (точнее - аббревиатура на древнееврейском языке) \"אתבש\" составлено из букв «алеф», «тав», «бет» и «шин», то есть первой, последней, второй и предпоследней букв еврейского алфавита.\n" +
+                        "Впервые встречается в древнееврейском тексте Библии / Танаха.\n" +
+                        "Ниже даны примеры для английского, русского алфавитов:",
                 new Dimension(700, 100));
 
-        ImageScalingLabel caesarEncryptDescription = new ImageScalingLabel(CAESAR_ENCRYPT_DESCRIPTION_PATH, 650, 274);
+        ImageScalingLabel atbashEncryptDescription = new ImageScalingLabel(ATBASH_ENCRYPT_DESCRIPTION_PATH, 650, 105);
 
         // пример шифрования текста
         // выбор алфавита
@@ -53,23 +56,22 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
         JLabel operationTypeHint = createOperationTypeHintLabel();
         JComboBox<CryptoType> operationType = createOperationTypeComboBox();
 
-        // выбор сдвига
-        JLabel shiftHint = createShiftHintLabel();
-        JComboBox<Integer> shift = createShiftComboBox(32);
-
-        // поля для ввода текста
         JTextArea beforeTextField = createBeforeTextField("текст на русском", contentPanel);
         JButton transformTextButton = createTransformButton();
         JTextArea afterTextField = createAfterTextField(contentPanel);
+
+        transformTextButton.addActionListener(e ->
+        {
+            LanguageInput languageInput = (LanguageInput) Objects.requireNonNull(alphabet.getSelectedItem());
+
+            String transformedText = transformText(operationType, beforeTextField, languageInput);
+            afterTextField.setText(transformedText);
+        });
 
         // пример шифрования изображения 1
         // выбор типа операции
         JLabel operationTypeImageHint = createOperationTypeHintLabel();
         JComboBox<CryptoType> operationTypeImage = createOperationTypeComboBox();
-
-        JLabel shiftImageHint = createShiftHintLabel();
-        shiftImageHint.setPreferredSize(new Dimension(500, 500));
-        JComboBox<Integer> shiftImage = createShiftComboBox(299);
 
         ImageScalingLabel leftImage = createImageScalingLabel(HUMAN_EXAMPLE);
         JButton transformImageButton = createTransformButton();
@@ -87,22 +89,6 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
             rightImage.setIcon(new ImageIcon(temp));
         });
 
-        transformTextButton.addActionListener(e ->
-        {
-            LanguageInput languageInput = (LanguageInput) Objects.requireNonNull(alphabet.getSelectedItem());
-            int offset = (int) Objects.requireNonNull(shift.getSelectedItem());
-            if(offset > languageInput.getLanguageAlphabet().length())
-            {
-                showMessageDialog(null, "Сдвиг не должен превышать длину алфавита");
-            }
-            else
-            {
-                String transformedText = transformText(operationType, beforeTextField, languageInput, offset);
-                afterTextField.setText(transformedText);
-            }
-        });
-
-
         transformImageButton.addActionListener(e ->
         {
             try
@@ -112,12 +98,12 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
                 {
                     case ENCRYPT:
                     {
-                        CaesarCipher.encryptImage(leftImage, rightImage, (int) shiftImage.getSelectedItem());
+                        AtbashCipher.encryptImage(leftImage, rightImage);
                         break;
                     }
                     case DECRYPT:
                     {
-                        CaesarCipher.decryptImage(leftImage, rightImage, (int) shiftImage.getSelectedItem());
+                        AtbashCipher.decryptImage(leftImage, rightImage);
                         break;
                     }
                     default: {
@@ -136,11 +122,7 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
         JLabel operationTypeImageHint2 = createOperationTypeHintLabel();
         JComboBox<CryptoType> operationTypeImage2 = createOperationTypeComboBox();
 
-        JLabel shiftImageHint2 = createShiftHintLabel();
-        shiftImageHint2.setPreferredSize(new Dimension(500, 500));
-        JComboBox<Integer> shiftImage2 = createShiftComboBox(299);
-
-        ImageScalingLabel leftImage2 = createImageScalingLabel(VERTICAL_LINE_EXAMPLE_PATH);
+        ImageScalingLabel leftImage2 = createImageScalingLabel(DIAGONAL_LINE_EXAMPLE_PATH);
         JButton transformImageButton2 = createTransformButton();
 
         JButton swapImageButton2 = new JButton();
@@ -165,12 +147,12 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
                 {
                     case ENCRYPT:
                     {
-                        CaesarCipher.encryptImage(leftImage2, rightImage2, (int) shiftImage2.getSelectedItem());
+                        AtbashCipher.encryptImage(leftImage2, rightImage2);
                         break;
                     }
                     case DECRYPT:
                     {
-                        CaesarCipher.decryptImage(leftImage2, rightImage2, (int) shiftImage2.getSelectedItem());
+                        AtbashCipher.decryptImage(leftImage2, rightImage2);
                         break;
                     }
                     default: {
@@ -189,14 +171,10 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
         JLabel operationTypeImageHint3 = createOperationTypeHintLabel();
         JComboBox<CryptoType> operationTypeImage3 = createOperationTypeComboBox();
 
-        JLabel shiftImageHint3 = createShiftHintLabel();
-        shiftImageHint3.setPreferredSize(new Dimension(500, 500));
-        JComboBox<Integer> shiftImage3 = createShiftComboBox(299);
-
         JButton downloadImage = new JButton();
         downloadImage.setText("Загрузить картинку");
 
-        ImageScalingLabel leftImage3 = createImageScalingLabel(VERTICAL_LINE_EXAMPLE_PATH);
+        ImageScalingLabel leftImage3 = createImageScalingLabel(DIAGONAL_LINE_EXAMPLE_PATH);
         JButton transformImageButton3 = createTransformButton();
 
         JButton swapImageButton3 = new JButton();
@@ -221,12 +199,12 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
                 {
                     case ENCRYPT:
                     {
-                        CaesarCipher.encryptImage(leftImage3, rightImage3, (int) shiftImage3.getSelectedItem());
+                        AtbashCipher.encryptImage(leftImage3, rightImage3);
                         break;
                     }
                     case DECRYPT:
                     {
-                        CaesarCipher.decryptImage(leftImage3, rightImage3, (int) shiftImage3.getSelectedItem());
+                        AtbashCipher.decryptImage(leftImage3, rightImage3);
                         break;
                     }
                     default: {
@@ -267,16 +245,14 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
         groupLayoutContentPanel.setHorizontalGroup(groupLayoutContentPanel.createParallelGroup()
                 .addComponent(title)
                 .addComponent(description)
-                .addComponent(caesarEncryptDescription)
+                .addComponent(atbashEncryptDescription)
                 .addGroup(groupLayoutContentPanel.createSequentialGroup()
                         .addComponent(alphabetHint)
                         .addComponent(operationTypeHint)
-                        .addComponent(shiftHint)
                 )
                 .addGroup(groupLayoutContentPanel.createSequentialGroup()
                         .addComponent(alphabet)
                         .addComponent(operationType)
-                        .addComponent(shift)
                 )
                 .addGroup(groupLayoutContentPanel.createSequentialGroup()
                         .addComponent(beforeTextField)
@@ -285,11 +261,9 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
                 )
                 .addGroup(groupLayoutContentPanel.createSequentialGroup()
                         .addComponent(operationTypeImageHint)
-                        .addComponent(shiftImageHint)
                 )
                 .addGroup(groupLayoutContentPanel.createSequentialGroup()
                         .addComponent(operationTypeImage)
-                        .addComponent(shiftImage)
                 )
                 .addGroup(groupLayoutContentPanel.createSequentialGroup()
                         .addComponent(leftImage)
@@ -299,13 +273,12 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
                         )
                         .addComponent(rightImage))
 
+
                 .addGroup(groupLayoutContentPanel.createSequentialGroup()
                         .addComponent(operationTypeImageHint2)
-                        .addComponent(shiftImageHint2)
                 )
                 .addGroup(groupLayoutContentPanel.createSequentialGroup()
                         .addComponent(operationTypeImage2)
-                        .addComponent(shiftImage2)
                 )
                 .addGroup(groupLayoutContentPanel.createSequentialGroup()
                         .addComponent(leftImage2)
@@ -318,11 +291,9 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
 
                 .addGroup(groupLayoutContentPanel.createSequentialGroup()
                         .addComponent(operationTypeImageHint3)
-                        .addComponent(shiftImageHint3)
                 )
                 .addGroup(groupLayoutContentPanel.createSequentialGroup()
                         .addComponent(operationTypeImage3)
-                        .addComponent(shiftImage3)
                 )
                 .addGroup(groupLayoutContentPanel.createSequentialGroup()
                         .addComponent(downloadImage)
@@ -339,17 +310,14 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
         groupLayoutContentPanel.setVerticalGroup(groupLayoutContentPanel.createSequentialGroup()
                 .addComponent(title)
                 .addComponent(description)
-                .addComponent(caesarEncryptDescription)
-
+                .addComponent(atbashEncryptDescription)
                 .addGroup(groupLayoutContentPanel.createParallelGroup()
                         .addComponent(alphabetHint)
                         .addComponent(operationTypeHint)
-                        .addComponent(shiftHint)
                 )
                 .addGroup(groupLayoutContentPanel.createParallelGroup()
                         .addComponent(alphabet)
                         .addComponent(operationType)
-                        .addComponent(shift)
                 )
                 .addGroup(groupLayoutContentPanel.createParallelGroup()
                         .addComponent(beforeTextField)
@@ -358,11 +326,9 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
                 )
                 .addGroup(groupLayoutContentPanel.createParallelGroup()
                         .addComponent(operationTypeImageHint)
-                        .addComponent(shiftImageHint)
                 )
                 .addGroup(groupLayoutContentPanel.createParallelGroup()
                         .addComponent(operationTypeImage)
-                        .addComponent(shiftImage)
                 )
                 .addGroup(groupLayoutContentPanel.createParallelGroup()
                         .addComponent(leftImage)
@@ -375,11 +341,9 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
 
                 .addGroup(groupLayoutContentPanel.createParallelGroup()
                         .addComponent(operationTypeImageHint2)
-                        .addComponent(shiftImageHint2)
                 )
                 .addGroup(groupLayoutContentPanel.createParallelGroup()
                         .addComponent(operationTypeImage2)
-                        .addComponent(shiftImage2)
                 )
                 .addGroup(groupLayoutContentPanel.createParallelGroup()
                         .addComponent(leftImage2)
@@ -393,11 +357,9 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
 
                 .addGroup(groupLayoutContentPanel.createParallelGroup()
                         .addComponent(operationTypeImageHint3)
-                        .addComponent(shiftImageHint3)
                 )
                 .addGroup(groupLayoutContentPanel.createParallelGroup()
                         .addComponent(operationTypeImage3)
-                        .addComponent(shiftImage3)
                 )
                 .addGroup(groupLayoutContentPanel.createParallelGroup()
                         .addComponent(downloadImage)
@@ -412,63 +374,20 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
         );
     }
 
-    private static String transformText(JComboBox<CryptoType> operationType, JTextArea beforeTextField, LanguageInput languageInput, int offset)
+    private static JComboBox<LanguageInput> createAlphabetComboBox()
     {
-        CryptoType cryptoType = (CryptoType) operationType.getSelectedItem();
-        switch (Objects.requireNonNull(cryptoType))
-        {   case ENCRYPT: return CaesarCipher.encryptText(beforeTextField.getText(), languageInput, offset);
-            case DECRYPT: return CaesarCipher.decryptText(beforeTextField.getText(), languageInput, offset);
-            default: return null;
-        }
+        JComboBox<LanguageInput> alphabet = new JComboBox<>();
+        alphabet.setModel(new DefaultComboBoxModel(LanguageInput.values()));
+        alphabet.setMaximumSize(new Dimension(200, 20));
+        return alphabet;
     }
 
-    private static ImageScalingLabel createImageScalingLabel(String gradientExamplePath)
+    private static JLabel createLabelAlphabetHint()
     {
-        ImageScalingLabel leftImage = new ImageScalingLabel(gradientExamplePath, 300, 300);
-        leftImage.setBorder(new BorderUIResource.LineBorderUIResource(new Color(0, 0, 0)));
-        return leftImage;
-    }
-
-    private static JTextArea createAfterTextField(JPanel contentPanel)
-    {
-        JTextArea afterTextField = new JTextArea();
-        afterTextField.setText("BBBBBBBBBBBBBBBBBBBBBBBB");
-        afterTextField.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
-        afterTextField.setMaximumSize(new Dimension((int) contentPanel.getSize().getWidth(), 400));
-        return afterTextField;
-    }
-
-    private static JButton createTransformButton()
-    {
-        JButton transformTextButton = new JButton();
-        transformTextButton.setText(" → ");
-        transformTextButton.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
-        return transformTextButton;
-    }
-
-    private static JTextArea createBeforeTextField(String text, JPanel contentPanel)
-    {
-        JTextArea beforeTextField = new JTextArea();
-        beforeTextField.setText(text);
-        beforeTextField.setMaximumSize(new Dimension((int) contentPanel.getSize().getWidth(), 400));
-        beforeTextField.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
-        return beforeTextField;
-    }
-
-    private static JComboBox<Integer> createShiftComboBox(int shiftSize)
-    {
-        JComboBox<Integer> shift = new JComboBox<>();
-        IntStream.rangeClosed(1, shiftSize).boxed().forEach(shift::addItem);
-        shift.setMaximumSize(new Dimension(200, 20));
-        return shift;
-    }
-
-    private static JLabel createShiftHintLabel()
-    {
-        JLabel shiftHint = new JLabel("Сдвиг");
-        shiftHint.setMaximumSize(new Dimension(200, 40));
-        shiftHint.setVerticalAlignment(SwingConstants.BOTTOM);
-        return shiftHint;
+        JLabel alphabetHint = new JLabel("Алфавит");
+        alphabetHint.setMaximumSize(new Dimension(200, 40));
+        alphabetHint.setVerticalAlignment(SwingConstants.BOTTOM);
+        return alphabetHint;
     }
 
     private static JComboBox<CryptoType> createOperationTypeComboBox()
@@ -487,19 +406,46 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
         return operationTypeHint;
     }
 
-    private static JComboBox<LanguageInput> createAlphabetComboBox()
+    private static JTextArea createBeforeTextField(String text, JPanel contentPanel)
     {
-        JComboBox<LanguageInput> alphabet = new JComboBox<>();
-        alphabet.setModel(new DefaultComboBoxModel(LanguageInput.values()));
-        alphabet.setMaximumSize(new Dimension(200, 20));
-        return alphabet;
+        JTextArea beforeTextField = new JTextArea();
+        beforeTextField.setText(text);
+        beforeTextField.setMaximumSize(new Dimension((int) contentPanel.getSize().getWidth(), 400));
+        beforeTextField.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
+        return beforeTextField;
     }
 
-    private static JLabel createLabelAlphabetHint()
+    private static JButton createTransformButton()
     {
-        JLabel alphabetHint = new JLabel("Алфавит");
-        alphabetHint.setMaximumSize(new Dimension(200, 40));
-        alphabetHint.setVerticalAlignment(SwingConstants.BOTTOM);
-        return alphabetHint;
+        JButton transformTextButton = new JButton();
+        transformTextButton.setText(" → ");
+        transformTextButton.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
+        return transformTextButton;
+    }
+
+    private static JTextArea createAfterTextField(JPanel contentPanel)
+    {
+        JTextArea afterTextField = new JTextArea();
+        afterTextField.setText("BBBBBBBBBBBBBBBBBBBBBBBB");
+        afterTextField.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
+        afterTextField.setMaximumSize(new Dimension((int) contentPanel.getSize().getWidth(), 400));
+        return afterTextField;
+    }
+
+    private static String transformText(JComboBox<CryptoType> operationType, JTextArea beforeTextField, LanguageInput languageInput)
+    {
+        CryptoType cryptoType = (CryptoType) operationType.getSelectedItem();
+        switch (Objects.requireNonNull(cryptoType))
+        {   case ENCRYPT: return AtbashCipher.encryptText(beforeTextField.getText(), languageInput);
+            case DECRYPT: return AtbashCipher.decryptText(beforeTextField.getText(), languageInput);
+            default: return null;
+        }
+    }
+
+    private static ImageScalingLabel createImageScalingLabel(String gradientExamplePath)
+    {
+        ImageScalingLabel leftImage = new ImageScalingLabel(gradientExamplePath, 300, 300);
+        leftImage.setBorder(new BorderUIResource.LineBorderUIResource(new Color(0, 0, 0)));
+        return leftImage;
     }
 }

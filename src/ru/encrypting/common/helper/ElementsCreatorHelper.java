@@ -48,8 +48,19 @@ public class ElementsCreatorHelper
             }
         });
     }};
-    public static final JButton REPLACEMENT_ENCRYPT_BUTTON = new MenuButton("Шифр замены");
-    public static final JButton ATBASH_ENCRYPT_BUTTON = new MenuButton("Шифр Атбаша");
+    public static final JButton ATBASH_ENCRYPT_BUTTON = new MenuButton("Шифр Атбаша")
+    {{
+        this.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                contentPanel.removeAll();
+                contentPanel.repaint();
+                AtbashEncryptPanelCreator.getInstance().initPanel(contentPanel, groupLayoutContentPanel);
+            }
+        });
+    }};
     public static final JButton CODE_WORD_ENCRYPT_BUTTON = new MenuButton("Шифр кодового слова");
     public static final JButton RSA_ENCRYPT_BUTTON = new MenuButton("RSA Шифрование")
     {{

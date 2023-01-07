@@ -94,7 +94,7 @@ public class VigenereEncryptPanelCreator implements EncryptPanelCreator
         JButton transformImageButton = createTransformButton();
 
         JButton swapImageButton = new JButton();
-        swapImageButton.setText("< - >");
+        swapImageButton.setText("↔");
 
         ImageScalingLabel rightImage = createImageScalingLabel(EMPTY_IMAGE_PATH);
 
@@ -166,7 +166,7 @@ public class VigenereEncryptPanelCreator implements EncryptPanelCreator
         JButton transformImageButton2 = createTransformButton();
 
         JButton swapImageButton2 = new JButton();
-        swapImageButton2.setText("< - >");
+        swapImageButton2.setText("↔");
 
         ImageScalingLabel rightImage2 = createImageScalingLabel(EMPTY_IMAGE_PATH);
 
@@ -239,7 +239,7 @@ public class VigenereEncryptPanelCreator implements EncryptPanelCreator
         JButton transformImageButton3 = createTransformButton();
 
         JButton swapImageButton3 = new JButton();
-        swapImageButton3.setText("< - >");
+        swapImageButton3.setText("↔");
 
         JButton downloadImage = new JButton();
         downloadImage.setText("Загрузить картинку");
@@ -530,7 +530,7 @@ public class VigenereEncryptPanelCreator implements EncryptPanelCreator
     private static JButton createTransformButton()
     {
         JButton transformTextButton = new JButton();
-        transformTextButton.setText("->");
+        transformTextButton.setText(" → ");
         transformTextButton.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
         return transformTextButton;
     }

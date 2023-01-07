@@ -27,8 +27,6 @@ public class ButtonPanel extends JPanel
         add(LEGEND_BUTTON, gbc);
         add(CAESER_ENCRYPT_BUTTON, gbc);
         add(VIGENERE_ENCRYPT_BUTTON, gbc);
-        add(REPLACEMENT_ENCRYPT_BUTTON, gbc);
-        add(ATBASH_ENCRYPT_BUTTON, gbc);
         add(ATBASH_ENCRYPT_BUTTON, gbc);
         add(CODE_WORD_ENCRYPT_BUTTON, gbc);
         add(RSA_ENCRYPT_BUTTON, gbc);
