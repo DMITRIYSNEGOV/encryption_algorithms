@@ -1,7 +1,6 @@
 package ru.encrypting.common.helper;
 
 import ru.encrypting.cipher.AtbashCipher;
-import ru.encrypting.cipher.CaesarCipher;
 import ru.encrypting.common.CryptoType;
 import ru.encrypting.common.LanguageInput;
 import ru.encrypting.label.ImageScalingLabel;
@@ -10,15 +9,15 @@ import ru.encrypting.textPane.DescriptionTextPane;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-import static javax.swing.JOptionPane.showMessageDialog;
 import static ru.encrypting.common.ResourcesPath.*;
+import static ru.encrypting.common.StringConstants.*;
+import static ru.encrypting.common.helper.ElementsCreatorHelper.*;
 
 public class AtbashEncryptPanelCreator implements EncryptPanelCreator
 {
@@ -35,14 +34,11 @@ public class AtbashEncryptPanelCreator implements EncryptPanelCreator
     @Override
     public void initPanel(JPanel contentPanel, GroupLayout groupLayoutContentPanel)
     {
-        JLabel title = new TitleLabel("Шифр Атбаша", ATBASH_TITLE_PATH);
+        JLabel title = new TitleLabel(ATBASH_TITLE, ATBASH_TITLE_PATH);
         title.setMaximumSize(new Dimension((int) contentPanel.getSize().getWidth(), 40));
 
         JTextPane description = new DescriptionTextPane(
-                "   Атба́ш — простой шифр подстановки для алфавитного письма. Правило шифрования состоит в замене i-й буквы алфавита буквой с номером  n-i+1, где n — число букв в алфавите.\n" +
-                        "Происхождение слова «атбаш» объясняется принципом замены букв. Слово (точнее - аббревиатура на древнееврейском языке) \"אתבש\" составлено из букв «алеф», «тав», «бет» и «шин», то есть первой, последней, второй и предпоследней букв еврейского алфавита.\n" +
-                        "Впервые встречается в древнееврейском тексте Библии / Танаха.\n" +
-                        "Ниже даны примеры для английского, русского алфавитов:",
+                ATBASH_DESCRIPTION,
                 new Dimension(700, 100));
 
         ImageScalingLabel atbashEncryptDescription = new ImageScalingLabel(ATBASH_ENCRYPT_DESCRIPTION_PATH, 650, 105);
@@ -77,7 +73,7 @@ public class AtbashEncryptPanelCreator implements EncryptPanelCreator
         JButton transformImageButton = createTransformButton();
 
         JButton swapImageButton = new JButton();
-        swapImageButton.setText("↔");
+        swapImageButton.setText(DOUBLE_ARROW);
 
         ImageScalingLabel rightImage = createImageScalingLabel(EMPTY_IMAGE_PATH);
 
@@ -126,7 +122,7 @@ public class AtbashEncryptPanelCreator implements EncryptPanelCreator
         JButton transformImageButton2 = createTransformButton();
 
         JButton swapImageButton2 = new JButton();
-        swapImageButton2.setText("↔");
+        swapImageButton2.setText(DOUBLE_ARROW);
 
         ImageScalingLabel rightImage2 = createImageScalingLabel(EMPTY_IMAGE_PATH);
 
@@ -172,13 +168,13 @@ public class AtbashEncryptPanelCreator implements EncryptPanelCreator
         JComboBox<CryptoType> operationTypeImage3 = createOperationTypeComboBox();
 
         JButton downloadImage = new JButton();
-        downloadImage.setText("Загрузить картинку");
+        downloadImage.setText(LOAD_IMAGE_BUTTON_TEXT);
 
         ImageScalingLabel leftImage3 = createImageScalingLabel(DIAGONAL_LINE_EXAMPLE_PATH);
         JButton transformImageButton3 = createTransformButton();
 
         JButton swapImageButton3 = new JButton();
-        swapImageButton3.setText("↔");
+        swapImageButton3.setText(DOUBLE_ARROW);
 
         ImageScalingLabel rightImage3 = createImageScalingLabel(EMPTY_IMAGE_PATH);
 
@@ -374,64 +370,6 @@ public class AtbashEncryptPanelCreator implements EncryptPanelCreator
         );
     }
 
-    private static JComboBox<LanguageInput> createAlphabetComboBox()
-    {
-        JComboBox<LanguageInput> alphabet = new JComboBox<>();
-        alphabet.setModel(new DefaultComboBoxModel(LanguageInput.values()));
-        alphabet.setMaximumSize(new Dimension(200, 20));
-        return alphabet;
-    }
-
-    private static JLabel createLabelAlphabetHint()
-    {
-        JLabel alphabetHint = new JLabel("Алфавит");
-        alphabetHint.setMaximumSize(new Dimension(200, 40));
-        alphabetHint.setVerticalAlignment(SwingConstants.BOTTOM);
-        return alphabetHint;
-    }
-
-    private static JComboBox<CryptoType> createOperationTypeComboBox()
-    {
-        JComboBox<CryptoType> operationType = new JComboBox<>();
-        operationType.setModel(new DefaultComboBoxModel(CryptoType.values()));
-        operationType.setMaximumSize(new Dimension(200, 20));
-        return operationType;
-    }
-
-    private static JLabel createOperationTypeHintLabel()
-    {
-        JLabel operationTypeHint = new JLabel("Тип операции");
-        operationTypeHint.setMaximumSize(new Dimension(200, 40));
-        operationTypeHint.setVerticalAlignment(SwingConstants.BOTTOM);
-        return operationTypeHint;
-    }
-
-    private static JTextArea createBeforeTextField(String text, JPanel contentPanel)
-    {
-        JTextArea beforeTextField = new JTextArea();
-        beforeTextField.setText(text);
-        beforeTextField.setMaximumSize(new Dimension((int) contentPanel.getSize().getWidth(), 400));
-        beforeTextField.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
-        return beforeTextField;
-    }
-
-    private static JButton createTransformButton()
-    {
-        JButton transformTextButton = new JButton();
-        transformTextButton.setText(" → ");
-        transformTextButton.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
-        return transformTextButton;
-    }
-
-    private static JTextArea createAfterTextField(JPanel contentPanel)
-    {
-        JTextArea afterTextField = new JTextArea();
-        afterTextField.setText("BBBBBBBBBBBBBBBBBBBBBBBB");
-        afterTextField.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
-        afterTextField.setMaximumSize(new Dimension((int) contentPanel.getSize().getWidth(), 400));
-        return afterTextField;
-    }
-
     private static String transformText(JComboBox<CryptoType> operationType, JTextArea beforeTextField, LanguageInput languageInput)
     {
         CryptoType cryptoType = (CryptoType) operationType.getSelectedItem();
@@ -440,12 +378,5 @@ public class AtbashEncryptPanelCreator implements EncryptPanelCreator
             case DECRYPT: return AtbashCipher.decryptText(beforeTextField.getText(), languageInput);
             default: return null;
         }
-    }
-
-    private static ImageScalingLabel createImageScalingLabel(String gradientExamplePath)
-    {
-        ImageScalingLabel leftImage = new ImageScalingLabel(gradientExamplePath, 300, 300);
-        leftImage.setBorder(new BorderUIResource.LineBorderUIResource(new Color(0, 0, 0)));
-        return leftImage;
     }
 }

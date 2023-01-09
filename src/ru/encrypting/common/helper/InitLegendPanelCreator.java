@@ -5,10 +5,10 @@ import ru.encrypting.label.TitleLabel;
 import ru.encrypting.textPane.DescriptionTextPane;
 
 import javax.swing.*;
-import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 
 import static ru.encrypting.common.ResourcesPath.*;
+import static ru.encrypting.common.StringConstants.*;
 
 public class InitLegendPanelCreator implements EncryptPanelCreator
 {
@@ -25,27 +25,25 @@ public class InitLegendPanelCreator implements EncryptPanelCreator
     @Override
     public void initPanel(JPanel contentPanel, GroupLayout groupLayoutContentPanel)
     {
-        JLabel title = new TitleLabel("Приложение для изучения алгоритмов шифрования", LEGEND_TITLE_PATH);
+        JLabel title = new TitleLabel(LEGEND_TITLE , LEGEND_TITLE_PATH);
 
         JTextPane description = new DescriptionTextPane(
-                "Данная программа позволит познакомиться и изучить популярные виды шифрования на существующих и своих примерах",
+                LEGEND_DESCRIPTION,
                 new Dimension(700,23));
 
         Font bigFont = new Font("Arial Black", Font.BOLD, 45);
-        JLabel textBeforeEncode = new JLabel("TEXT") {{ setFont(bigFont); }};
-        ImageScalingLabel arrow = new ImageScalingLabel(ARROW_RIGHT_PATH, 200, 140);
-        JLabel textAfterEncode =  new JLabel("UFYU") {{ setFont(bigFont);}};
+        JLabel textBeforeEncode = new JLabel(LEGEND_SIMPLE_TEXT) {{ setFont(bigFont); }};
+        ImageScalingLabel arrow = new ImageScalingLabel(ARROW_RIGHT_PATH, 120, 67);
+        JLabel textAfterEncode =  new JLabel(LEGEND_CIPHERED_TEXT) {{ setFont(bigFont);}};
 
-        arrow.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
-
-        JLabel textBeforeDecode = new JLabel("UFYU") {{ setFont(bigFont); }};
-        ImageScalingLabel key = new ImageScalingLabel(KEY_PATH, 200, 140);
-        JLabel textAfterDecode =  new JLabel("TEXT") {{ setFont(bigFont);}};
+        JLabel textBeforeDecode = new JLabel(LEGEND_CIPHERED_TEXT) {{ setFont(bigFont); }};
+        ImageScalingLabel key = new ImageScalingLabel(KEY_PATH, 119, 58);
+        JLabel textAfterDecode =  new JLabel(LEGEND_SIMPLE_TEXT) {{ setFont(bigFont);}};
 
         JLabel author = new JLabel();
         author.setHorizontalAlignment(SwingConstants.RIGHT);
         author.setVerticalAlignment(SwingConstants.BOTTOM);
-        author.setText("<html><br><br><br><br><br><br><br>Разработчик: Снегов Дмитрий<br>Год: 2022</html>");
+        author.setText(LEGEND_AUTHOR);
 
         groupLayoutContentPanel.setHorizontalGroup(groupLayoutContentPanel.createParallelGroup()
                 .addGroup(groupLayoutContentPanel.createSequentialGroup()

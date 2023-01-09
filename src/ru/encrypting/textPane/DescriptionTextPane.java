@@ -10,5 +10,6 @@ public class DescriptionTextPane extends JTextPane
         this.setText(text);
         this.setEditable(false);
         this.setMaximumSize(dimension);
+        this.setBackground(new Color(123,123,213));
     }
 }

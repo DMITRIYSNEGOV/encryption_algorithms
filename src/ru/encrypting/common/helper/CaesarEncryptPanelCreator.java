@@ -9,16 +9,16 @@ import ru.encrypting.textPane.DescriptionTextPane;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.stream.IntStream;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 import static ru.encrypting.common.ResourcesPath.*;
+import static ru.encrypting.common.StringConstants.*;
+import static ru.encrypting.common.helper.ElementsCreatorHelper.*;
 
 public class CaesarEncryptPanelCreator implements EncryptPanelCreator
 {
@@ -35,11 +35,11 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
     @Override
     public void initPanel(JPanel contentPanel, GroupLayout groupLayoutContentPanel)
     {
-        JLabel title = new TitleLabel("Шифр Цезаря", CAESAR_TITLE_PATH);
+        JLabel title = new TitleLabel(CAESAR_TITLE, CAESAR_TITLE_PATH);
         title.setMaximumSize(new Dimension((int) contentPanel.getSize().getWidth(), 40));
 
         JTextPane description = new DescriptionTextPane(
-                "   Шифр Цeзаря (шифр сдвига, код Цезаря) – такой простой вид шифрования текста, при котором все символы в тексте заменяются символами, сдвинутыми по алфавиту на правее или левее на постоянное количество позиций. Например, при сдвиге на 1 буква А заменяется на Б, Б на В и т.д. Вы можете как зашифровать текст данным способом, так и выполнить дешифровку.",
+                CAESAR_DESCRIPTION,
                 new Dimension(700, 100));
 
         ImageScalingLabel caesarEncryptDescription = new ImageScalingLabel(CAESAR_ENCRYPT_DESCRIPTION_PATH, 650, 274);
@@ -75,7 +75,7 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
         JButton transformImageButton = createTransformButton();
 
         JButton swapImageButton = new JButton();
-        swapImageButton.setText("↔");
+        swapImageButton.setText(DOUBLE_ARROW);
 
         ImageScalingLabel rightImage = createImageScalingLabel(EMPTY_IMAGE_PATH);
 
@@ -93,7 +93,7 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
             int offset = (int) Objects.requireNonNull(shift.getSelectedItem());
             if(offset > languageInput.getLanguageAlphabet().length())
             {
-                showMessageDialog(null, "Сдвиг не должен превышать длину алфавита");
+                showMessageDialog(null, CAESAR_SHIFT_ERROR);
             }
             else
             {
@@ -144,7 +144,7 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
         JButton transformImageButton2 = createTransformButton();
 
         JButton swapImageButton2 = new JButton();
-        swapImageButton2.setText("↔");
+        swapImageButton2.setText(DOUBLE_ARROW);
 
         ImageScalingLabel rightImage2 = createImageScalingLabel(EMPTY_IMAGE_PATH);
 
@@ -194,13 +194,13 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
         JComboBox<Integer> shiftImage3 = createShiftComboBox(299);
 
         JButton downloadImage = new JButton();
-        downloadImage.setText("Загрузить картинку");
+        downloadImage.setText(LOAD_IMAGE_BUTTON_TEXT);
 
         ImageScalingLabel leftImage3 = createImageScalingLabel(VERTICAL_LINE_EXAMPLE_PATH);
         JButton transformImageButton3 = createTransformButton();
 
         JButton swapImageButton3 = new JButton();
-        swapImageButton3.setText("↔");
+        swapImageButton3.setText(DOUBLE_ARROW);
 
         ImageScalingLabel rightImage3 = createImageScalingLabel(EMPTY_IMAGE_PATH);
 
@@ -422,84 +422,11 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
         }
     }
 
-    private static ImageScalingLabel createImageScalingLabel(String gradientExamplePath)
-    {
-        ImageScalingLabel leftImage = new ImageScalingLabel(gradientExamplePath, 300, 300);
-        leftImage.setBorder(new BorderUIResource.LineBorderUIResource(new Color(0, 0, 0)));
-        return leftImage;
-    }
-
-    private static JTextArea createAfterTextField(JPanel contentPanel)
-    {
-        JTextArea afterTextField = new JTextArea();
-        afterTextField.setText("BBBBBBBBBBBBBBBBBBBBBBBB");
-        afterTextField.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
-        afterTextField.setMaximumSize(new Dimension((int) contentPanel.getSize().getWidth(), 400));
-        return afterTextField;
-    }
-
-    private static JButton createTransformButton()
-    {
-        JButton transformTextButton = new JButton();
-        transformTextButton.setText(" → ");
-        transformTextButton.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
-        return transformTextButton;
-    }
-
-    private static JTextArea createBeforeTextField(String text, JPanel contentPanel)
-    {
-        JTextArea beforeTextField = new JTextArea();
-        beforeTextField.setText(text);
-        beforeTextField.setMaximumSize(new Dimension((int) contentPanel.getSize().getWidth(), 400));
-        beforeTextField.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
-        return beforeTextField;
-    }
-
-    private static JComboBox<Integer> createShiftComboBox(int shiftSize)
-    {
-        JComboBox<Integer> shift = new JComboBox<>();
-        IntStream.rangeClosed(1, shiftSize).boxed().forEach(shift::addItem);
-        shift.setMaximumSize(new Dimension(200, 20));
-        return shift;
-    }
-
     private static JLabel createShiftHintLabel()
     {
-        JLabel shiftHint = new JLabel("Сдвиг");
+        JLabel shiftHint = new JLabel(SHIFT);
         shiftHint.setMaximumSize(new Dimension(200, 40));
         shiftHint.setVerticalAlignment(SwingConstants.BOTTOM);
         return shiftHint;
-    }
-
-    private static JComboBox<CryptoType> createOperationTypeComboBox()
-    {
-        JComboBox<CryptoType> operationType = new JComboBox<>();
-        operationType.setModel(new DefaultComboBoxModel(CryptoType.values()));
-        operationType.setMaximumSize(new Dimension(200, 20));
-        return operationType;
-    }
-
-    private static JLabel createOperationTypeHintLabel()
-    {
-        JLabel operationTypeHint = new JLabel("Тип операции");
-        operationTypeHint.setMaximumSize(new Dimension(200, 40));
-        operationTypeHint.setVerticalAlignment(SwingConstants.BOTTOM);
-        return operationTypeHint;
-    }
-
-    private static JComboBox<LanguageInput> createAlphabetComboBox()
-    {
-        JComboBox<LanguageInput> alphabet = new JComboBox<>();
-        alphabet.setModel(new DefaultComboBoxModel(LanguageInput.values()));
-        alphabet.setMaximumSize(new Dimension(200, 20));
-        return alphabet;
-    }
-
-    private static JLabel createLabelAlphabetHint()
-    {
-        JLabel alphabetHint = new JLabel("Алфавит");
-        alphabetHint.setMaximumSize(new Dimension(200, 40));
-        alphabetHint.setVerticalAlignment(SwingConstants.BOTTOM);
-        return alphabetHint;
     }
 }

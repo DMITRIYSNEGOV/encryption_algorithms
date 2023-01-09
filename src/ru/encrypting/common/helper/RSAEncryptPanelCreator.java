@@ -1,20 +1,18 @@
 package ru.encrypting.common.helper;
 
 import ru.encrypting.cipher.RSACipher;
-import ru.encrypting.common.CryptoType;
 import ru.encrypting.label.ImageScalingLabel;
 import ru.encrypting.label.TitleLabel;
 import ru.encrypting.textPane.DescriptionTextPane;
 
 import javax.swing.*;
-import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 
 import static ru.encrypting.cipher.RSACipher.*;
 import static ru.encrypting.common.ResourcesPath.*;
+import static ru.encrypting.common.StringConstants.*;
 
 public class RSAEncryptPanelCreator implements EncryptPanelCreator
 {
@@ -31,91 +29,84 @@ public class RSAEncryptPanelCreator implements EncryptPanelCreator
     @Override
     public void initPanel(JPanel contentPanel, GroupLayout groupLayoutContentPanel)
     {
-        JLabel title = new TitleLabel("RSA шифрование", RSA_TITLE_PATH);
+        JLabel title = new TitleLabel(RSA_TITLE , RSA_TITLE_PATH);
         title.setMaximumSize(new Dimension((int) contentPanel.getSize().getWidth(), 40));
 
         JTextPane description = new DescriptionTextPane(
-                "   RSA — криптографический алгоритм с открытым ключом, основывающийся на вычислительной сложности задачи факторизации больших целых чисел.\n" +
-                "   Криптосистема RSA стала первой системой, пригодной и для шифрования, и для цифровой подписи. Алгоритм используется в большом числе криптографических приложений, включая PGP, S/MIME, TLS/SSL, IPSEC/IKE и других.\n" +
-                "   При шифровании RSA сообщения шифруются с помощью кода, называемого открытый ключ, которыми можно поделиться открыто. Из-за некоторых четких математических свойств алгоритма RSA, если сообщение было зашифровано открытым ключом, оно может быть расшифровано только другим ключом, известным как закрытый ключ. У каждого пользователя RSA есть пара ключей, состоящая из их открытого и закрытого ключей. Как следует из названия, закрытый ключ должен храниться в секрете.\n" +
-                "   Схемы шифрования с открытым ключом отличаются от шифрование с симметричным ключом, где и в процессе шифрования, и в дешифровании используется один и тот же закрытый ключ. Эти различия делают шифрование с открытым ключом, такое как RSA, полезным для связи в ситуациях, когда не было возможности безопасно распространять ключи заранее.",
+                RSA_DESCRIPTION,
                 new Dimension(700, 100));
 
         ImageScalingLabel caesarEncryptDescription = new ImageScalingLabel(RSA_ENCRYPT_DESCRIPTION_PATH, 650, 274);
 
-        JLabel textHint = createLabelHint("Текст");
+        JLabel textHint = createLabelHint(RSA_TEXT_HINT);
         JTextArea textInput = createTextArea("simple text", contentPanel);
 
         RSACipher.RSA rsa = new RSA(textInput.getText());
 
-        JLabel pHint = createLabelHint("p");
+        JLabel pHint = createLabelHint(RSA_P);
         JTextArea pInput = createTextArea(rsa.getP().toString(), contentPanel);
 
-        JLabel qHint = createLabelHint("q");
+        JLabel qHint = createLabelHint(RSA_Q);
         JTextArea qInput = createTextArea(rsa.getQ().toString(), contentPanel);
 
         DescriptionTextPane nDescription = new DescriptionTextPane(
-                "Вычисляем \"n = p * q\"",
+                RSA_N_DESCRIPTION,
                 new Dimension(700, 40));
-        JLabel nHint = createLabelHint("n");
+        JLabel nHint = createLabelHint(RSA_N);
         JTextArea nInput = createTextArea(rsa.getN().toString(), contentPanel);
 
         DescriptionTextPane totnDescription = new DescriptionTextPane(
-                "Вычисляем тотиентную функцию Эйлера. tot(n) = φ(n) = (p - 1) * (q - 1)",
+                RSA_TOTN_DESCRIPTION,
                 new Dimension(700, 40));
-        JLabel totnHint = createLabelHint("tot(n)");
+        JLabel totnHint = createLabelHint(RSA_TOTN);
         JTextArea totnInput = createTextArea(rsa.getTotN().toString(), contentPanel);
 
         DescriptionTextPane eDescription = new DescriptionTextPane(
-                "Выберем любое число \"e\", где \"1 < e < φ(n)\" и \"e\" и \"e\" нечетное число, которое не имеет общих делителей с φ(n)",
+                RSA_E_DESCRIPTION,
                 new Dimension(700, 40));
-        JLabel eHint = createLabelHint("e");
+        JLabel eHint = createLabelHint(RSA_E);
         JTextArea eInput = createTextArea(rsa.getE().toString(), contentPanel);
 
         DescriptionTextPane dDescription = new DescriptionTextPane(
-                "Вычислим \"d\", которое обратно \"e\" по модулю φ",
+                RSA_D_DESCRIPTION,
                 new Dimension(700, 40));
-        JLabel dHint = createLabelHint("d");
+        JLabel dHint = createLabelHint(RSA_D);
         JTextArea dInput = createTextArea(rsa.getD().toString(), contentPanel);
 
-        JLabel byteArrayTextHint = createLabelHint("Текст в байтах");
+        JLabel byteArrayTextHint = createLabelHint(RSA_BYTE_ARRAY);
         JTextArea byteArrayTextInput = createTextArea(rsa.getCipherText().toString(), contentPanel);
 
-        JLabel encryptedByteArrayTextHint = createLabelHint("Зашифрованный текст в байтах");
+        JLabel encryptedByteArrayTextHint = createLabelHint(RSA_ENCRYPTED_BYTE_ARRAY);
         JTextArea encryptedByteArrayTextInput = createTextArea(rsa.getEncrypted().toString(), contentPanel);
 
-        JLabel encryptedTextHint = createLabelHint("Зашифрованный текст");
+        JLabel encryptedTextHint = createLabelHint(RSA_ENCRYPTED_BYTE_ARRAY_TEXT);
         JTextArea encryptedTextInput = createTextArea(rsa.getEncryptedBytes(), contentPanel);
 
-        JLabel decryptedByteArrayTextHint = createLabelHint("Расшифрованный текст в байтах");
+        JLabel decryptedByteArrayTextHint = createLabelHint(RSA_DECRYPTED_BYTE_ARRAY_TEXT);
         JTextArea decryptedByteArrayTextInput = createTextArea(rsa.getDecrypted().toString(), contentPanel);
 
-        JLabel decryptedTextHint = createLabelHint("Расшифрованный текст");
+        JLabel decryptedTextHint = createLabelHint(RSA_DECRYPTED_TEXT);
         JTextArea decryptedTextInput = createTextArea(rsa.getRestoredText(), contentPanel);
 
-        JButton finalCalculate = new JButton("Вычислить")
+        JButton finalCalculate = new JButton(RSA_FINAL_CALCULATE)
         {{
-            this.addActionListener(new ActionListener()
+            this.addActionListener(e ->
             {
-                @Override
-                public void actionPerformed(ActionEvent e)
-                {
-                    RSACipher.RSA rsa = new RSA(textInput.getText());
-                    pInput.setText(rsa.getP().toString());
-                    qInput.setText(rsa.getQ().toString());
-                    nInput.setText(rsa.getN().toString());
-                    totnInput.setText(rsa.getTotN().toString());
-                    eInput.setText(rsa.getE().toString());
-                    dInput.setText(rsa.getD().toString());
+                RSA rsa1 = new RSA(textInput.getText());
+                pInput.setText(rsa1.getP().toString());
+                qInput.setText(rsa1.getQ().toString());
+                nInput.setText(rsa1.getN().toString());
+                totnInput.setText(rsa1.getTotN().toString());
+                eInput.setText(rsa1.getE().toString());
+                dInput.setText(rsa1.getD().toString());
 
-                    byteArrayTextInput.setText(rsa.getCipherText().toString());
+                byteArrayTextInput.setText(rsa1.getCipherText().toString());
 
-                    encryptedByteArrayTextInput.setText(rsa.getEncryptedBytes());
+                encryptedByteArrayTextInput.setText(rsa1.getEncryptedBytes());
 
-                    encryptedTextInput.setText(rsa.getEncrypted().toString());
-                    decryptedByteArrayTextInput.setText(rsa.getDecrypted().toString());
-                    decryptedTextInput.setText(rsa.getRestoredText());
-                }
+                encryptedTextInput.setText(rsa1.getEncrypted().toString());
+                decryptedByteArrayTextInput.setText(rsa1.getDecrypted().toString());
+                decryptedTextInput.setText(rsa1.getRestoredText());
             });
         }};
 
@@ -234,7 +225,6 @@ public class RSAEncryptPanelCreator implements EncryptPanelCreator
         textField.setPreferredSize(new Dimension(600, 40));
         textField.setSize(600, 40);
         textField.setLineWrap(true);
-        textField.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
         return textField;
     }
 }

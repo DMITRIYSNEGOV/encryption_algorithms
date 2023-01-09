@@ -9,16 +9,16 @@ import ru.encrypting.textPane.DescriptionTextPane;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.IntStream;
 
 import static ru.encrypting.common.ResourcesPath.*;
+import static ru.encrypting.common.StringConstants.*;
+import static ru.encrypting.common.helper.ElementsCreatorHelper.*;
 
 public class VigenereEncryptPanelCreator implements EncryptPanelCreator
 {
@@ -35,12 +35,11 @@ public class VigenereEncryptPanelCreator implements EncryptPanelCreator
     @Override
     public void initPanel(JPanel contentPanel, GroupLayout groupLayoutContentPanel)
     {
-        JLabel title = new TitleLabel("Шифр Виженера", VIGENERE_TITLE_PATH);
+        JLabel title = new TitleLabel(VIGENERE_TITLE, VIGENERE_TITLE_PATH);
         title.setMaximumSize(new Dimension((int) contentPanel.getSize().getWidth(), 40));
 
         JTextPane description = new DescriptionTextPane(
-                "   Шифр Виженера - это последовательность ранее описанных нами шифров Цезаря, но только с разными значениями сдвига.\n" +
-                        "Шифр Виженера считается намного безопасней и сложней, так как он является шифром подстановки. Это означает, что в данном шифре каждая буква введенного текста заменяется буквой уже не простого, а шифр-текста. Для расшифровки такого вида шифра используют частотный криптоанализ.",
+                VIGENERE_DESCRIPTION,
                 new Dimension(700, 100));
 
         ImageScalingLabel vigenereEncryptDescription = new ImageScalingLabel(VIGENERE_ENCRYPT_DESCRIPTION_PATH, 650, 542);
@@ -75,7 +74,7 @@ public class VigenereEncryptPanelCreator implements EncryptPanelCreator
         JLabel operationTypeImageHint = createOperationTypeHintLabel();
         JComboBox<CryptoType> operationTypeImage = createOperationTypeComboBox();
 
-        JLabel KeyImageHint1 = createShiftHintLabel();
+        JLabel KeyImageHint1 = createKeyHintLabel();
         KeyImageHint1.setPreferredSize(new Dimension(500, 500));
 
         JComboBox<Integer> keyImage1 = createShiftComboBox(299);
@@ -94,7 +93,7 @@ public class VigenereEncryptPanelCreator implements EncryptPanelCreator
         JButton transformImageButton = createTransformButton();
 
         JButton swapImageButton = new JButton();
-        swapImageButton.setText("↔");
+        swapImageButton.setText(DOUBLE_ARROW);
 
         ImageScalingLabel rightImage = createImageScalingLabel(EMPTY_IMAGE_PATH);
 
@@ -147,7 +146,7 @@ public class VigenereEncryptPanelCreator implements EncryptPanelCreator
         JLabel operationTypeImageHint2 = createOperationTypeHintLabel();
         JComboBox<CryptoType> operationTypeImage2 = createOperationTypeComboBox();
 
-        JLabel KeyImageHint2 = createShiftHintLabel();
+        JLabel KeyImageHint2 = createKeyHintLabel();
         KeyImageHint2.setPreferredSize(new Dimension(500, 500));
 
         JComboBox<Integer> keyImage1_2 = createShiftComboBox(299);
@@ -166,7 +165,7 @@ public class VigenereEncryptPanelCreator implements EncryptPanelCreator
         JButton transformImageButton2 = createTransformButton();
 
         JButton swapImageButton2 = new JButton();
-        swapImageButton2.setText("↔");
+        swapImageButton2.setText(DOUBLE_ARROW);
 
         ImageScalingLabel rightImage2 = createImageScalingLabel(EMPTY_IMAGE_PATH);
 
@@ -220,7 +219,7 @@ public class VigenereEncryptPanelCreator implements EncryptPanelCreator
         JLabel operationTypeImageHint3 = createOperationTypeHintLabel();
         JComboBox<CryptoType> operationTypeImage3 = createOperationTypeComboBox();
 
-        JLabel KeyImageHint3 = createShiftHintLabel();
+        JLabel KeyImageHint3 = createKeyHintLabel();
         KeyImageHint3.setPreferredSize(new Dimension(500, 500));
 
         JComboBox<Integer> keyImage1_3 = createShiftComboBox(299);
@@ -239,10 +238,10 @@ public class VigenereEncryptPanelCreator implements EncryptPanelCreator
         JButton transformImageButton3 = createTransformButton();
 
         JButton swapImageButton3 = new JButton();
-        swapImageButton3.setText("↔");
+        swapImageButton3.setText(DOUBLE_ARROW);
 
         JButton downloadImage = new JButton();
-        downloadImage.setText("Загрузить картинку");
+        downloadImage.setText(LOAD_IMAGE_BUTTON_TEXT);
 
         ImageScalingLabel rightImage3 = createImageScalingLabel(EMPTY_IMAGE_PATH);
 
@@ -503,93 +502,12 @@ public class VigenereEncryptPanelCreator implements EncryptPanelCreator
         );
     }
 
-    private static ImageScalingLabel createImageScalingLabel(String gradientExamplePath)
-    {
-        ImageScalingLabel leftImage = new ImageScalingLabel(gradientExamplePath, 300, 300);
-        leftImage.setBorder(new BorderUIResource.LineBorderUIResource(new Color(0, 0, 0)));
-        return leftImage;
-    }
-
-    private static JLabel createShiftHintLabel()
-    {
-        JLabel shiftHint = new JLabel("Ключ");
-        shiftHint.setMaximumSize(new Dimension(200, 40));
-        shiftHint.setVerticalAlignment(SwingConstants.BOTTOM);
-        return shiftHint;
-    }
-
-    private static JTextArea createAfterTextField(JPanel contentPanel)
-    {
-        JTextArea afterTextField = new JTextArea();
-        afterTextField.setText("BBBBBBBBBBBBBBBBBBBBBBBB");
-        afterTextField.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
-        afterTextField.setMaximumSize(new Dimension((int) contentPanel.getSize().getWidth(), 400));
-        return afterTextField;
-    }
-
-    private static JButton createTransformButton()
-    {
-        JButton transformTextButton = new JButton();
-        transformTextButton.setText(" → ");
-        transformTextButton.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
-        return transformTextButton;
-    }
-
-    private static JTextArea createBeforeTextField(String text, JPanel contentPanel)
-    {
-        JTextArea beforeTextField = new JTextArea();
-        beforeTextField.setText(text);
-        beforeTextField.setMaximumSize(new Dimension((int) contentPanel.getSize().getWidth(), 400));
-        beforeTextField.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 0, 0)));
-        return beforeTextField;
-    }
-
-    private static JComboBox<Integer> createShiftComboBox(int shiftSize)
-    {
-        JComboBox<Integer> shift = new JComboBox<>();
-        IntStream.rangeClosed(1, shiftSize).boxed().forEach(shift::addItem);
-        shift.setMaximumSize(new Dimension(200, 20));
-        return shift;
-    }
-
     private static JLabel createKeyHintLabel()
     {
         JLabel keyHint = new JLabel("Ключ");
         keyHint.setMaximumSize(new Dimension(200, 40));
         keyHint.setVerticalAlignment(SwingConstants.BOTTOM);
         return keyHint;
-    }
-
-    private static JComboBox<CryptoType> createOperationTypeComboBox()
-    {
-        JComboBox<CryptoType> operationType = new JComboBox<>();
-        operationType.setModel(new DefaultComboBoxModel(CryptoType.values()));
-        operationType.setMaximumSize(new Dimension(200, 20));
-        return operationType;
-    }
-
-    private static JLabel createOperationTypeHintLabel()
-    {
-        JLabel operationTypeHint = new JLabel("Тип операции");
-        operationTypeHint.setMaximumSize(new Dimension(200, 40));
-        operationTypeHint.setVerticalAlignment(SwingConstants.BOTTOM);
-        return operationTypeHint;
-    }
-
-    private static JComboBox<LanguageInput> createAlphabetComboBox()
-    {
-        JComboBox<LanguageInput> alphabet = new JComboBox<>();
-        alphabet.setModel(new DefaultComboBoxModel(LanguageInput.values()));
-        alphabet.setMaximumSize(new Dimension(200, 20));
-        return alphabet;
-    }
-
-    private static JLabel createLabelAlphabetHint()
-    {
-        JLabel alphabetHint = new JLabel("Алфавит");
-        alphabetHint.setMaximumSize(new Dimension(200, 40));
-        alphabetHint.setVerticalAlignment(SwingConstants.BOTTOM);
-        return alphabetHint;
     }
 
     private static String transformText(JComboBox<CryptoType> operationType, JTextArea beforeTextField, LanguageInput languageInput, String key)
