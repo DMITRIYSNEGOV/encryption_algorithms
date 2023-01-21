@@ -17,7 +17,7 @@ import static ru.encrypting.common.StringConstants.*;
 public class ElementsCreatorHelper
 {
     // Кнопки
-    public static final JButton LEGEND_BUTTON = new MenuButton("Описание")
+    public static final JButton LEGEND_BUTTON = new MenuButton(DESCRIPTION)
     {{
         this.addActionListener(new ActionListener()
         {
@@ -71,7 +71,7 @@ public class ElementsCreatorHelper
         });
     }};
 
-    public static final JButton RSA_ENCRYPT_BUTTON = new MenuButton("RSA Шифрование")
+    public static final JButton RSA_ENCRYPT_BUTTON = new MenuButton(RSA_TITLE)
     {{
        this.addActionListener(new ActionListener()
        {

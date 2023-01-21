@@ -445,13 +445,6 @@ public class VigenereEncryptPanelCreator implements EncryptPanelCreator
                         )
                         .addComponent(rightImage))
 
-
-
-
-
-
-
-
                 .addGroup(groupLayoutContentPanel.createParallelGroup()
                         .addComponent(operationTypeImageHint2)
                         .addComponent(KeyImageHint2)
@@ -471,12 +464,6 @@ public class VigenereEncryptPanelCreator implements EncryptPanelCreator
                                 .addComponent(transformImageButton2)
                         )
                         .addComponent(rightImage2))
-
-
-
-
-
-
                 .addGroup(groupLayoutContentPanel.createParallelGroup()
                         .addComponent(operationTypeImageHint3)
                         .addComponent(KeyImageHint3)

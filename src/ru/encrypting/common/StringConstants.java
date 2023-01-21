@@ -8,6 +8,7 @@ public class StringConstants
     public static final String OPERATION_TYPE = "Тип операции";
     public static final String SHIFT = "Сдвиг";
     public static final String LOAD_IMAGE_BUTTON_TEXT = "Загрузить картинку";
+    public static final String DESCRIPTION = "Описание";
 
     public static final String LEGEND_TITLE = "Приложение для изучения алгоритмов шифрования";
     public static final String LEGEND_DESCRIPTION = "Данная программа позволит познакомиться и изучить популярные виды шифрования на существующих и своих примерах";

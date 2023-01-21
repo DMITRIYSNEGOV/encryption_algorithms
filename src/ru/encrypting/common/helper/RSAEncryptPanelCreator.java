@@ -7,8 +7,6 @@ import ru.encrypting.textPane.DescriptionTextPane;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import static ru.encrypting.cipher.RSACipher.*;
 import static ru.encrypting.common.ResourcesPath.*;

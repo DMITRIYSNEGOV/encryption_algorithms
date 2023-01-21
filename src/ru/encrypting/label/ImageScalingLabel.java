@@ -8,6 +8,10 @@ public class ImageScalingLabel extends JLabel
 {
     public ImageScalingLabel(String resourceImagePath, int width, int height)
     {
-            setIcon(new ResizedIconFromResources(resourceImagePath, width, height));
+            setIcon(new ResizedIconFromResources(
+                    resourceImagePath,
+                    width,
+                    height)
+            );
     }
 }

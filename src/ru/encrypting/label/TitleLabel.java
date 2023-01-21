@@ -17,6 +17,9 @@ public class TitleLabel extends JLabel
         this.setHorizontalTextPosition(SwingConstants.LEFT);
         this.setHorizontalAlignment(SwingConstants.CENTER);
 
-        this.setIcon(new ResizedIconFromResources(resourceImagePath, ICON_WIDTH, ICON_HEIGHT));
+        this.setIcon(new ResizedIconFromResources(
+                resourceImagePath,
+                ICON_WIDTH,
+                ICON_HEIGHT));
     }
 }

@@ -4,7 +4,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -16,7 +15,6 @@ public class ResizedIconFromResources extends ImageIcon
         {
             InputStream is = getClass().getResourceAsStream(resourceImagePath);
             BufferedImage img = ImageIO.read(is);
-//            BufferedImage img = ImageIO.read(new File(getClass().getResource(resourceImagePath).getPath()));
 
             setImage(new ImageIcon(
                     new ImageIcon(img).getImage().getScaledInstance(

@@ -13,7 +13,6 @@ import java.awt.*;
 @Setter
 public class ContentPanel extends JPanel
 {
-
     public ContentPanel()
     {
         GroupLayout groupLayout = new GroupLayout(this);
@@ -25,6 +24,4 @@ public class ContentPanel extends JPanel
         ElementsCreatorHelper.setGroupLayoutContentPanel(groupLayout);
         InitLegendPanelCreator.getInstance().initPanel(null, groupLayout);
     }
-
-
 }

@@ -24,7 +24,4 @@ public class ResourcesPath
 
     public static final String ATBASH_TITLE_PATH = "/images/atbash_title.png";
     public static final String ATBASH_ENCRYPT_DESCRIPTION_PATH = "/images/atbash_encrypt_description.png";
-
-
-
 }

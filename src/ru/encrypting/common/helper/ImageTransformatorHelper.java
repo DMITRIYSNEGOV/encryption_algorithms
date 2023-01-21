@@ -14,7 +14,7 @@ public class ImageTransformatorHelper
                 leftImage.getIcon().getIconHeight(),
                 BufferedImage.TYPE_INT_RGB);
         Graphics g = bi.createGraphics();
-        // paint the Icon to the BufferedImage.
+
         leftImage.getIcon().paintIcon(null, g, 0, 0);
         g.dispose();
         return bi;
