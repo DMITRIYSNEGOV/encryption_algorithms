@@ -89,7 +89,7 @@ public class VigenereEncryptPanelCreator implements EncryptPanelCreator
         keyImage4.setMaximumSize(new Dimension(10, keyImage4.getPreferredSize().height));
         keyImage5.setMaximumSize(new Dimension(10, keyImage5.getPreferredSize().height));
 
-        ImageScalingLabel leftImage = createImageScalingLabel(HUMAN_EXAMPLE);
+        ImageScalingLabel leftImage = createImageScalingLabel(PARROT_EXAMPLE);
         JButton transformImageButton = createTransformButton();
 
         JButton swapImageButton = new JButton();

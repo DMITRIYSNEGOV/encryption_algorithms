@@ -71,7 +71,7 @@ public class CaesarEncryptPanelCreator implements EncryptPanelCreator
         shiftImageHint.setPreferredSize(new Dimension(500, 500));
         JComboBox<Integer> shiftImage = createShiftComboBox(299);
 
-        ImageScalingLabel leftImage = createImageScalingLabel(HUMAN_EXAMPLE);
+        ImageScalingLabel leftImage = createImageScalingLabel(PARROT_EXAMPLE);
         JButton transformImageButton = createTransformButton();
 
         JButton swapImageButton = new JButton();

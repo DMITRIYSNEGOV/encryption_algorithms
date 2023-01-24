@@ -69,7 +69,7 @@ public class AtbashEncryptPanelCreator implements EncryptPanelCreator
         JLabel operationTypeImageHint = createOperationTypeHintLabel();
         JComboBox<CryptoType> operationTypeImage = createOperationTypeComboBox();
 
-        ImageScalingLabel leftImage = createImageScalingLabel(HUMAN_EXAMPLE);
+        ImageScalingLabel leftImage = createImageScalingLabel(PARROT_EXAMPLE);
         JButton transformImageButton = createTransformButton();
 
         JButton swapImageButton = new JButton();

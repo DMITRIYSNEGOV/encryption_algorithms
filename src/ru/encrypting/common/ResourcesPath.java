@@ -20,7 +20,7 @@ public class ResourcesPath
     public static final String VERTICAL_LINE_EXAMPLE_PATH = "/images/vertical_line_example.png";
     public static final String DIAGONAL_LINE_EXAMPLE_PATH = "/images/diagonal_line_example.png";
     public static final String EMPTY_IMAGE_PATH = "/images/empty_image.png";
-    public static final String HUMAN_EXAMPLE = "/images/human.png";
+    public static final String PARROT_EXAMPLE = "/images/parrot.png";
 
     public static final String ATBASH_TITLE_PATH = "/images/atbash_title.png";
     public static final String ATBASH_ENCRYPT_DESCRIPTION_PATH = "/images/atbash_encrypt_description.png";

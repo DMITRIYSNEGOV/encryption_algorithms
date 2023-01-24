@@ -15,8 +15,8 @@ public class EncryptLearner
         mainFrame.setSize(917, 600);
         mainFrame.setResizable(false);
 
-        File mainIcon = new File(EncryptLearner.class.getResource(MAIN_ICON).getPath());
-        mainFrame.setIconImage(new ImageIcon(mainIcon.getPath()).getImage());
+
+        mainFrame.setIconImage(new ImageIcon(EncryptLearner.class.getResource(MAIN_ICON)).getImage());
         JPanel contentPanel = new ContentPanel();
         contentPanel.setBackground(new Color(123,123,213));
 
